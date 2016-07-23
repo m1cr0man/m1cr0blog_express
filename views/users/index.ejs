@@ -1,0 +1,33 @@
+<% var users = locals.data || {} -%>
+<% include ../partials/header %>
+			<header class='pure-u-1'>
+				<h1>All users</h1>
+				<a href='add' class='pure-button pure-button-success'>Add</a>
+				<br>
+				<br>
+			</header>
+
+			<section class='pure-u-1'>
+				<table class='pure-table pure-table-bordered pure-table-striped'>
+					<thead>
+						<tr>
+							<th>Username</th>
+							<th>API Token</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+<%
+for (username in users) {
+	var user = users[username];
+-%>
+						<tr>
+							<td><%= username %></td>
+							<td><%= user.token %></td>
+							<td><a href='<%= username %>' class='pure-button pure-button-secondary'>Edit</a> <a href='<%= username %>/delete' class='pure-button pure-button-error'>Delete</a></td>
+						</tr>
+<% } -%>
+					</tbody>
+				</table>
+			</section>
+<% include ../partials/footer %>

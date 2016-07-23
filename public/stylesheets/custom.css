@@ -29,6 +29,7 @@ nav {
 	}
 
 footer {
+	margin-top: 1em;
 	text-align: center;
 	background-color: #DDE6E1;
 	color: #696969;
@@ -81,3 +82,18 @@ footer {
 .padded { padding: 2em; }
 
 .centered { text-align: center; }
+
+/* PureCSS extra button colours */
+.pure-button-success, .pure-button-secondary, .pure-button-warning, .pure-button-error {
+	color: white !important;
+	border-radius: 4px;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.pure-button-success { background-color: rgb(28, 184, 65) !important; }
+
+.pure-button-error { background-color: rgb(202, 60, 60) !important; }
+
+.pure-button-warning { background-color: rgb(223, 117, 20) !important; }
+
+.pure-button-secondary { background-color: rgb(66, 184, 221) !important; }

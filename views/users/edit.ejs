@@ -1,0 +1,15 @@
+<% var user = locals.data || {}; -%>
+<% include ../partials/header %>
+			<header class='pure-u-1'>
+				<h1><%= (user == locals.data)? 'Edit' : 'Add'  %> User</h1>
+			</header>
+
+			<form class='pure-u-1 pure-u-lg-1-2 pure-form pure-form-stacked' action='' method='POST'>
+				<label for='username'>Username</label>
+				<input type='text' name='username' autocomplete='username' placeholder='Username' value='<%= user.username || locals.username %>' autofocus>
+				<label for='password'>Password</label>
+				<input type='password' name='password' autocomplete='new-password' placeholder='Password' value=''>
+				<br>
+				<button type='submit' class='pure-button pure-button-success'><%= (user == locals.data)? 'Update' : 'Add' %></button>
+			</form>
+<% include ../partials/footer %>

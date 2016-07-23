@@ -24,4 +24,10 @@ npm-debug.log
 bin
 
 # Third party data
-pure.min.css
+thirdparty
+
+# Private folder
+private/*
+
+# Sublime stuff
+*.sublime-*
