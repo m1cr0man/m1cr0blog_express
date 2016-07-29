@@ -1,4 +1,4 @@
-<% var user = locals.data || {}; -%>
+<% locals.user = locals.data || {}; -%>
 <% include ../partials/header %>
 			<header class='pure-u-1'>
 				<h1><%= (user == locals.data)? 'Edit' : 'Add'  %> User</h1>

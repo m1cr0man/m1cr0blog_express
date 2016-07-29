@@ -1,0 +1,33 @@
+<% locals.meta = locals.data || {} -%>
+<% include ../partials/header %>
+			<header class='pure-u-1'>
+				<h1>All posts</h1>
+				<a href='add' class='pure-button pure-button-success'>Add</a>
+				<br>
+				<br>
+			</header>
+
+			<section class='pure-u-1'>
+				<table style='width: 100%;' class='pure-table pure-table-bordered pure-table-striped'>
+					<thead>
+						<tr>
+							<th>Title</th>
+							<th>Date Published</th>
+							<th>Tags</th>
+						</tr>
+					</thead>
+					<tbody>
+<%
+for (url in meta) {
+	var data = meta[url];
+-%>
+						<tr onclick='document.location += "<%= url %>";'>
+							<td><%= data.title %></td>
+							<td><%= (new Date(data.date)).toLocaleDateString('en-GB') %></td>
+							<td><%= data.tags %></td>
+						</tr>
+<% } -%>
+					</tbody>
+				</table>
+			</section>
+<% include ../partials/footer %>

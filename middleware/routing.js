@@ -19,9 +19,14 @@ adminRouter.use('/', users.isLoggedIn);
 adminRouter.get('/', admin.index);
 
 // User management
-adminRouter.get('/users', users.index);
+adminRouter.get('/users/', users.index);
 adminRouter.all('/users/add', users.add);
 adminRouter.all('/users/:username', users.edit);
 adminRouter.all('/users/:username/delete', users.delete);
+
+// Blog management
+adminRouter.get('/blog/', blog.list);
+adminRouter.all('/blog/add', blog.add);
+adminRouter.all('/blog/:url', blog.edit);
 
 module.exports = router;

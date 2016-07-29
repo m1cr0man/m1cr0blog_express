@@ -6,6 +6,10 @@ html, body {
 	background-color: mintcream;
 }
 
+[class*='pure-u'] {
+	box-sizing: content-box;
+}
+
 hr { width: 90%; }
 
 main {

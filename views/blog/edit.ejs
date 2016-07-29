@@ -1,0 +1,35 @@
+<% locals.post = locals.data || {}; -%>
+<% include ../partials/header %>
+			<header class='pure-u-1'>
+				<h1><%= (post == locals.data)? 'Edit' : 'Add'  %> Post</h1>
+			</header>
+
+			<form class='pure-u-1 pure-form pure-form-stacked' action='' method='POST'>
+				<fieldset class='pure-u-1-4'>
+					<label for='title'>Title</label>
+					<input name='title' type='text' autocomplete='title' placeholder='Title' value='<%= post.title || '' %>' autofocus>
+					<label for='url'>URL</label>
+					<input name='url' type='text' autocomplete='url' placeholder='URL' value='<%= post.url || '' %>' autofocus>
+					<label for='tags'>Tags</label>
+					<input name='tags' type='text' autocomplete='tags' placeholder='Tags' value='<%= post.tags || '' %>' autofocus>
+					<br>
+					<button type='submit' class='pure-button pure-button-success'><%= (post == locals.data)? 'Update' : 'Add' %></button>
+					<button type='button' onclick='preview();' class='pure-button pure-button-secondary'>Preview</button>
+				</fieldset>
+				<fieldset class='pure-u-17-24'>
+					<label for='markdown'>Body (Markdown)</label>
+					<textarea name='markdown' style='width: 100%;' rows='10'><%= post.markdown || '' %></textarea>
+				</fieldset>
+			</form>
+
+			<article class='pure-u-1'>
+			</article>
+
+			<script type='text/javascript' src='/javascripts/thirdparty/marked.js'></script>
+			<script type='text/javascript' src='/javascripts/thirdparty/jquery-3.1.0.min.js'></script>
+			<script type='text/javascript'>
+				function preview() {
+					$('article').html(marked($('textarea').val()));
+				}
+			</script>
+<% include ../partials/footer %>
