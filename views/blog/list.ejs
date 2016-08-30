@@ -21,7 +21,7 @@
 for (url in meta) {
 	var data = meta[url];
 -%>
-						<tr onclick='document.location += "<%= url %>";'>
+						<tr onclick='window.location.href = "<%= url %>";'>
 							<td><%= data.title %></td>
 							<td><%= (new Date(data.date)).toLocaleDateString('en-GB') %></td>
 							<td><%= data.tags %></td>

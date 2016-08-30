@@ -1,11 +1,13 @@
 const marked = require('marked');
+const crypto = require('crypto');
 const fs = require('fs');
 
 // Meta data:
-// - tags -> string[]
-// - date -> Object Date
+// - url -> string
 // - title -> string
 // - image -> string
+// - tags -> string[]
+// - datePublished -> Object Date or null if unpublished
 
 const POST_STORAGE_DIR = 'private/posts/';
 const IMAGE_STORAGE_DIR = 'public/images/';
@@ -16,64 +18,61 @@ if (!fs.existsSync(POST_STORAGE_DIR)) fs.mkdirSync(POST_STORAGE_DIR);
 if (!fs.existsSync(IMAGE_STORAGE_DIR)) fs.mkdirSync(IMAGE_STORAGE_DIR);
 if (!fs.existsSync(META_FILE)) fs.writeFileSync(META_FILE, JSON.stringify({}), 'utf8');
 
-var readMeta = _ => JSON.parse(fs.readFileSync(META_FILE, 'utf8')) || {};
+var protectedRead = path => fs.existsSync(path) && fs.readFileSync(path, 'utf8') || '';
+
+var readMeta = _ => JSON.parse(protectedRead(META_FILE)) || {};
 
 var writeMeta = meta => fs.writeFileSync(META_FILE, JSON.stringify(meta), 'utf8');
 
-var readMarkdown = url => fs.readFileSync(POST_STORAGE_DIR + url, 'utf8');
+var readMarkdown = id => protectedRead(POST_STORAGE_DIR + id);
 
-var writeMarkdown = (url, markdown) => fs.writeFileSync(POST_STORAGE_DIR + url, markdown, 'utf8');
+var writeMarkdown = (id, markdown) => fs.writeFileSync(POST_STORAGE_DIR + id, markdown, 'utf8');
 
 module.exports = {
-	exists: url =>
-		fs.existsSync(POST_STORAGE_DIR + url),
-
 	getAll: _ =>
 		readMeta(),
 
-	get: url => {
-		var data = readMeta()[url];
-		data.markdown = readMarkdown(url);
-		data.url = url;
+	get: id => {
+		var data = readMeta()[id] || {};
+		data.markdown = readMarkdown(id);
+		data.id = id;
 		return data;
 	},
 
-	create: (input) => {
+	exists: id =>
+		fs.existsSync(POST_STORAGE_DIR + id),
 
-		// Add Metadata
-		// TODO this doesnt work
-		var all_meta = readMeta();
-		all_meta[input.url] = {
-			tags: input.tags,
-			date: new Date(),
-			title: input.title,
-			image: input.image
-		}
-		writeMeta(all_meta);
-
-		// Save markdown
-		writeMarkdown(input.url, input.markdown);
+	create: _ => {
+		var new_id = null;
+		do {
+			new_id = crypto.randomBytes(4).toString('hex');
+		} while (fs.existsSync(POST_STORAGE_DIR + new_id));
+		writeMarkdown(new_id, '');
+		return new_id;
 	},
 
-	update: (input, old_url) => {
+	update: (id, input) => {
 		var all_meta = readMeta();
-		var url = input.url;
 
-		// Delete old data
-		if (old_url != url) {
-			fs.unlinkSync(POST_STORAGE_DIR + old_url);
-			delete all_meta[old_url];
-			all_meta[url] = {};
-		}
+		// If this is a new post, there won't be any meta data
+		if (!all_meta[id]) all_meta[id] = {}
 
 		// Update metadata
-		if (input.tags) all_meta[url].tags = input.tags;
-		if (input.date) all_meta[url].date = input.date;
-		if (input.title) all_meta[url].title = input.title;
-		if (input.image) all_meta[url].image = input.image;
+		if (input.tags) all_meta[id].tags = input.tags.split(',');
+		if (input.title) all_meta[id].url = input.url;
+		if (input.title) all_meta[id].title = input.title;
+		if (input.image) all_meta[id].image = input.image;
 		writeMeta(all_meta);
 
 		// Update markdown
-		writeMarkdown(url, input.markdown);
+		writeMarkdown(id, input.markdown);
+	},
+
+	publish: id => {
+		var all_meta = readMeta();
+
+		all_meta[id].published = new Date();
+
+		writeMeta(all_meta);
 	}
 };

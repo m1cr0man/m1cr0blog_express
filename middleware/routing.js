@@ -13,7 +13,7 @@ router.get('/', blog.index);
 router.use('/admin', adminRouter);
 adminRouter.all('/login', users.login);
 adminRouter.all('/logout', users.logout);
-adminRouter.use('/', users.isLoggedIn);
+// adminRouter.use('/', users.isLoggedIn);
 
 // All links past this point require authentication
 adminRouter.get('/', admin.index);
@@ -27,6 +27,6 @@ adminRouter.all('/users/:username/delete', users.delete);
 // Blog management
 adminRouter.get('/blog/', blog.list);
 adminRouter.all('/blog/add', blog.add);
-adminRouter.all('/blog/:url', blog.edit);
+adminRouter.all('/blog/:id', blog.edit);
 
 module.exports = router;
