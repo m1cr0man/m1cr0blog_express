@@ -28,5 +28,6 @@ adminRouter.all('/users/:username/delete', users.delete);
 adminRouter.get('/blog/', blog.list);
 adminRouter.all('/blog/add', blog.add);
 adminRouter.all('/blog/:id', blog.edit);
+adminRouter.all('/blog/:id/publish', blog.publish);
 
 module.exports = router;

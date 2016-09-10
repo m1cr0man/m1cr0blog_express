@@ -10,10 +10,12 @@ module.exports = {
 		res.render(VIEW_DIR + 'list', {data: postModel.getAll()}),
 
 	add: (req, res) =>
-		res.redirect(postModel.create()),
+		res.redirect(postModel.create() + '/'),
 
-	publish: (req, res) =>
-		postModel.publish(req.params.id),
+	publish: (req, res) => {
+		postModel.publish(req.params.id);
+		return res.redirect('../');
+	},
 
 	edit: (req, res, next) => {
 		if (!postModel.exists(req.params.id)) return next(Error('Post doesn\'t exist'));

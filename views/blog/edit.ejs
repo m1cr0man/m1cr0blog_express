@@ -1,10 +1,10 @@
 <% locals.post = locals.data || {}; -%>
 <% include ../partials/header %>
-			<header class='pure-u-1'>
+			<header>
 				<h1>Writing Post</h1>
 			</header>
 
-			<form class='pure-u-1 pure-form pure-form-stacked' action='' method='POST'>
+			<form class='pure-g pure-form pure-form-stacked' action='' method='POST'>
 				<fieldset class='pure-u-1-4'>
 					<label for='title'>Title</label>
 					<input name='title' type='text' autocomplete='title' placeholder='Title' value='<%= post.title %>' autofocus>
@@ -15,14 +15,16 @@
 					<br>
 					<button type='submit' class='pure-button pure-button-success'><%= (post == locals.data)? 'Update' : 'Add' %></button>
 					<button type='button' onclick='preview();' class='pure-button pure-button-secondary'>Preview</button>
+					<button type='button' onclick='window.location.href = "publish";' class='pure-button pure-button-secondary'>Publish</button>
 				</fieldset>
-				<fieldset class='pure-u-17-24'>
+
+				<fieldset class='pure-u-3-4'>
 					<label for='markdown'>Body (Markdown)</label>
 					<textarea name='markdown' style='width: 100%;' rows='10'><%= post.markdown %></textarea>
 				</fieldset>
 			</form>
 
-			<article class='pure-u-1'>
+			<article>
 			</article>
 
 			<script type='text/javascript' src='/javascripts/thirdparty/marked.js'></script>

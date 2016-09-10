@@ -43,11 +43,20 @@ module.exports = {
 		fs.existsSync(POST_STORAGE_DIR + id),
 
 	create: _ => {
+		var all_meta = readMeta();
+
 		var new_id = null;
 		do {
 			new_id = crypto.randomBytes(4).toString('hex');
-		} while (fs.existsSync(POST_STORAGE_DIR + new_id));
+		} while (all_meta[new_id]);
+
+		all_meta[new_id] = {
+			draft: true
+		}
+
+		writeMeta(all_meta);
 		writeMarkdown(new_id, '');
+
 		return new_id;
 	},
 
@@ -71,6 +80,7 @@ module.exports = {
 	publish: id => {
 		var all_meta = readMeta();
 
+		all_meta[id].draft = false;
 		all_meta[id].published = new Date();
 
 		writeMeta(all_meta);
