@@ -22,12 +22,14 @@ adminRouter.get('/', admin.index);
 adminRouter.get('/users/', users.index);
 adminRouter.all('/users/add', users.add);
 adminRouter.all('/users/:username', users.edit);
-adminRouter.all('/users/:username/delete', users.delete);
+adminRouter.get('/users/:username/delete', users.delete);
 
 // Blog management
 adminRouter.get('/blog/', blog.list);
 adminRouter.all('/blog/add', blog.add);
 adminRouter.all('/blog/:id', blog.edit);
-adminRouter.all('/blog/:id/publish', blog.publish);
+adminRouter.get('/blog/:id/publish', blog.publish);
+adminRouter.post('/blog/:id/upload', blog.upload);
+adminRouter.get('/blog/:id/deleteFile/:fileName', blog.deleteFile);
 
 module.exports = router;

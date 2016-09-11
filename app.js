@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const logger = require('morgan');
 const express = require('express');
 const favicon = require('serve-favicon');
+const busBoy = require('express-busboy');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const routing = require('./middleware/routing');
@@ -17,9 +18,16 @@ app.set('view engine', 'ejs');
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser(crypto.randomBytes(20).toString('hex')));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// BusBoy Body parser
+// Supports Multipart/form-data
+busBoy.extend(app, {
+    upload: true,
+    path: 'private/uploads-tmp'
+});
 
 app.use(cookies.load);
 

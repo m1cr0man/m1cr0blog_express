@@ -1,4 +1,4 @@
-<% locals.post = locals.data || {}; -%>
+<% locals.post = locals.data || {files: []}; -%>
 <% include ../partials/header %>
 			<header>
 				<h1>Writing Post</h1>
@@ -24,14 +24,85 @@
 				</fieldset>
 			</form>
 
+			<header>
+				<h2>Images</h2>
+			</header>
+
+			<form id='image-uploader' class='pure-g pure-form pure-form-stacked' action='upload' method='POST' enctype='multipart/form-data'>
+				<fieldset class='pure-u-1-4'>
+					<label for='upload-box'>Upload Images</label>
+					<input id='upload-box' name='file' type='file' accept='image/*'>
+				</fieldset>
+				<div id='uploader-gallery' class='pure-u-3-4'>
+					<div class='hidden'>
+						<a><img src=''></a>
+						<h3></h3>
+						<button type='button' class='remover pure-button pure-button-error'>Delete</button>
+						<button type='button' class='appender pure-button pure-button-success'>Insert</button>
+					</div>
+<% for (file of post.files) { -%>
+<% var url = '/posts/' + post.id + '/' + file; -%>
+					<div data-name='<%= file %>'>
+						<a href='<%= url %>'><img src='<%= url %>'></a>
+						<h3><%= file %></h3>
+						<button type='button' class='remover pure-button pure-button-error' onclick='deleteFile("<%= file %>");'>Delete</button>
+						<button type='button' class='appender pure-button pure-button-success' onclick='appendFile("<%= file %>");'>Insert</button>
+					</div>
+<% } -%>
+				</div>
+			</form>
+
 			<article>
 			</article>
 
 			<script type='text/javascript' src='/javascripts/thirdparty/marked.js'></script>
 			<script type='text/javascript' src='/javascripts/thirdparty/jquery-3.1.0.min.js'></script>
+			<script type='text/javascript' src='/javascripts/thirdparty/jquery.form.min.js'></script>
 			<script type='text/javascript'>
 				function preview() {
 					$('article').html(marked($('textarea').val()));
 				}
+
+				function uploadImage() {
+					$('#image-uploader').ajaxSubmit({
+						beforeSend: function(data) {
+							var files = $('#image-uploader input')[0].files;
+							for (var i = 0; i < files.length; i++) {
+								var file = files[i];
+								var newItem = $('#uploader-gallery div.hidden').clone();
+								newItem.children('a').attr('href', '/posts/<%= post.id %>/' + file.name);
+								newItem.children('button.remover').attr('onclick', 'deleteFile("' + file.name + '");');
+								newItem.children('button.appender').attr('onclick', 'appendFile("' + file.name + '");');
+								newItem.children('h3').html(file.name);
+								newItem.attr('data-name', file.name);
+								newItem.removeClass('hidden');
+								newItem.appendTo('#uploader-gallery');
+							}
+						},
+						success: function() {
+							$('#uploader-gallery a img').each(function() {
+								$(this).attr('src', $(this).parent().attr('href'));
+							});
+						},
+						error: function(err) {
+							console.error(err || 'No response');
+						}
+					});
+				}
+
+				function appendFile(file) {
+					var url = '/posts/<%= post.id %>/' + file;
+					$('textarea').val($('textarea').val() + '\n<a href="' + url + '"><img src="' + url + '"></a>');
+				}
+
+				function deleteFile(name) {
+					$.get('deleteFile/' + name, null, function() {
+						$('[data-name="' + name + '"]').hide();
+					});
+				}
+
+				$(document).ready(function() {
+					$('#image-uploader input').change(uploadImage);
+				});
 			</script>
 <% include ../partials/footer %>

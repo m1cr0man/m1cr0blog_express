@@ -28,6 +28,7 @@ thirdparty
 
 # Private folder
 private/*
+public/posts/*
 
 # Sublime stuff
 *.sublime-*

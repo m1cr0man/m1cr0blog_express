@@ -12,11 +12,6 @@ module.exports = {
 	add: (req, res) =>
 		res.redirect(postModel.create() + '/'),
 
-	publish: (req, res) => {
-		postModel.publish(req.params.id);
-		return res.redirect('../');
-	},
-
 	edit: (req, res, next) => {
 		if (!postModel.exists(req.params.id)) return next(Error('Post doesn\'t exist'));
 
@@ -31,5 +26,25 @@ module.exports = {
 		postModel.update(req.params.id, req.body);
 
 		return res.redirect('.?action=updated');
+	},
+
+	publish: (req, res) => {
+		postModel.publish(req.params.id);
+		return res.redirect('../');
+	},
+
+	upload: (req, res) => {
+		if (!req.files.file) return res.status(400).send('No file');
+
+		var result = postModel.addFile(req.params.id, req.files.file);
+
+		if (typeof result == 'string') return res.status(400).send(result);
+
+		return res.status(200).send('ok');
+	},
+
+	deleteFile: (req, res) => {
+		postModel.removeFile(req.params.id, req.params.fileName);
+		return res.status(200).send('ok');
 	}
 };

@@ -87,6 +87,8 @@ footer {
 
 .centered { text-align: center; }
 
+.hidden { display: none; }
+
 /* PureCSS extra button colours */
 .pure-button-success, .pure-button-secondary, .pure-button-warning, .pure-button-error {
 	color: white !important;
@@ -101,3 +103,24 @@ footer {
 .pure-button-warning { background-color: rgb(223, 117, 20) !important; }
 
 .pure-button-secondary { background-color: rgb(66, 184, 221) !important; }
+
+#uploader-gallery div {
+	width: 45%;
+	background-color: rgba(200, 200, 200, 0.6);
+	padding: 1em;
+	min-height: 128px;
+	margin-bottom: 1em;
+	border-radius: 5px;
+	display: inline-block;
+	margin-right: 1%;
+}
+
+	#uploader-gallery a {
+		margin-right: 1em;
+		float: left;
+	}
+
+	#uploader-gallery img {
+		max-width: 128px;
+		height: 128px;
+	}

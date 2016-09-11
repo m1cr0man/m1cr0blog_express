@@ -1,21 +1,25 @@
 const marked = require('marked');
 const crypto = require('crypto');
+const path = require('path');
 const fs = require('fs');
+
+const j = path.join;
 
 // Meta data:
 // - url -> string
 // - title -> string
 // - image -> string
 // - tags -> string[]
-// - datePublished -> Object Date or null if unpublished
+// - draft -> boolean
+// - published -> Object Date or null if unpublished
 
 const POST_STORAGE_DIR = 'private/posts/';
-const IMAGE_STORAGE_DIR = 'public/images/';
+const FILE_STORAGE_DIR = 'public/posts/';
 const META_FILE = POST_STORAGE_DIR + 'index.json';
 
 // Initialise folders + meta file
 if (!fs.existsSync(POST_STORAGE_DIR)) fs.mkdirSync(POST_STORAGE_DIR);
-if (!fs.existsSync(IMAGE_STORAGE_DIR)) fs.mkdirSync(IMAGE_STORAGE_DIR);
+if (!fs.existsSync(FILE_STORAGE_DIR)) fs.mkdirSync(FILE_STORAGE_DIR);
 if (!fs.existsSync(META_FILE)) fs.writeFileSync(META_FILE, JSON.stringify({}), 'utf8');
 
 var protectedRead = path => fs.existsSync(path) && fs.readFileSync(path, 'utf8') || '';
@@ -36,11 +40,15 @@ module.exports = {
 		var data = readMeta()[id] || {};
 		data.markdown = readMarkdown(id);
 		data.id = id;
+		data.files = [];
+		if (fs.existsSync(FILE_STORAGE_DIR + id)) data.files = fs.readdirSync(FILE_STORAGE_DIR + id);
 		return data;
 	},
 
-	exists: id =>
-		fs.existsSync(POST_STORAGE_DIR + id),
+	exists: id => {
+		var all_meta = readMeta();
+		return !!all_meta[id];
+	},
 
 	create: _ => {
 		var all_meta = readMeta();
@@ -75,6 +83,26 @@ module.exports = {
 
 		// Update markdown
 		writeMarkdown(id, input.markdown);
+	},
+
+	addFile: (id, file) => {
+		if (!file) return 'No file';
+
+		if (fs.existsSync(j(FILE_STORAGE_DIR, id, file.filename))) {
+			return 'File exists';
+		}
+
+		if (!fs.existsSync(j(FILE_STORAGE_DIR, id))) {
+			fs.mkdirSync(j(FILE_STORAGE_DIR, id));
+		}
+
+		return fs.renameSync(file.file, j(FILE_STORAGE_DIR, id, file.filename));
+	},
+
+	removeFile: (id, fileName) => {
+		var path = j(FILE_STORAGE_DIR, id, fileName);
+		if (fs.existsSync(path)) return fs.unlinkSync(path);
+		return false;
 	},
 
 	publish: id => {
