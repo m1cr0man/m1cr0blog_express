@@ -1,10 +1,14 @@
+const marked = require('marked');
 const postModel = require('../models/post');
 
 const VIEW_DIR = 'blog/';
 
 module.exports = {
-	index: (req, res) =>
-		res.render(VIEW_DIR + 'index'),
+	index: (req, res) => {
+		var data = postModel.getLatest();
+		data.body = marked(data.markdown);
+		return res.render(VIEW_DIR + 'index', {data: data});
+	},
 
 	list: (req, res) =>
 		res.render(VIEW_DIR + 'list', {data: postModel.getAll()}),

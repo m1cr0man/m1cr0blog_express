@@ -58,29 +58,41 @@ footer {
 	margin: 0 auto;
 }
 
-.blog-content, .blog-sidebar {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	padding: 1em;
-	position: relative;
+.blog-content {
+	margin-top: 1.5em;
 }
 
 .blog-content h1 {
-	padding-left: 0.5em;
+	width: 100%;
+	text-align: center;
+	margin: 0.25em;
 }
 
-.blog-date {
-	padding: 2em;
-	position: absolute;
+.blog-content header {
+	text-align: right;
+}
+
+.blog-content time {
 	font-style: italic;
 	color: #696969;
-	top: 0;
-	right: 0;
+	padding-right: 3em;
 }
 
 .blog-sidebar, .blog-intro {
 	text-align: center;
+}
+
+.blog-content .slideshow {
+	text-align: center;
+}
+
+.blog-content .slideshow img {
+	width: 75%;
+}
+
+.blog-content p img {
+	display: inline-block;
+	max-width: 30%;
 }
 
 .padded { padding: 2em; }

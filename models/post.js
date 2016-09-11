@@ -1,4 +1,3 @@
-const marked = require('marked');
 const crypto = require('crypto');
 const path = require('path');
 const fs = require('fs');
@@ -32,16 +31,36 @@ var readMarkdown = id => protectedRead(POST_STORAGE_DIR + id);
 
 var writeMarkdown = (id, markdown) => fs.writeFileSync(POST_STORAGE_DIR + id, markdown, 'utf8');
 
+var readFiles = id => fs.existsSync(FILE_STORAGE_DIR + id) && fs.readdirSync(FILE_STORAGE_DIR + id) || [];
+
 module.exports = {
 	getAll: _ =>
 		readMeta(),
 
+	getLatest: _ => {
+		var all_meta = readMeta();
+
+		var latest_post = null;
+		for (id in all_meta) {
+			var post = all_meta[id];
+			if (post.draft) continue;
+			if (!latest_post || latest_post.published < post.published) {
+				latest_post = post;
+				latest_post.id = id;
+			}
+		}
+
+		latest_post.markdown = readMarkdown(latest_post.id);
+		latest_post.files = readFiles(latest_post.id);
+
+		return latest_post;
+	},
+
 	get: id => {
 		var data = readMeta()[id] || {};
 		data.markdown = readMarkdown(id);
+		data.files = readFiles(id);
 		data.id = id;
-		data.files = [];
-		if (fs.existsSync(FILE_STORAGE_DIR + id)) data.files = fs.readdirSync(FILE_STORAGE_DIR + id);
 		return data;
 	},
 
@@ -76,7 +95,7 @@ module.exports = {
 
 		// Update metadata
 		if (input.tags) all_meta[id].tags = input.tags.split(',');
-		if (input.title) all_meta[id].url = input.url;
+		if (input.url) all_meta[id].url = input.url;
 		if (input.title) all_meta[id].title = input.title;
 		if (input.image) all_meta[id].image = input.image;
 		writeMeta(all_meta);

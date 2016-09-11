@@ -5,6 +5,7 @@
 			</header>
 
 			<form class='pure-g pure-form pure-form-stacked' action='' method='POST'>
+				<input name='image' type='hidden' value='<%= post.image %>'>
 				<fieldset class='pure-u-1-4'>
 					<label for='title'>Title</label>
 					<input name='title' type='text' autocomplete='title' placeholder='Title' value='<%= post.title %>' autofocus>
@@ -39,6 +40,7 @@
 						<h3></h3>
 						<button type='button' class='remover pure-button pure-button-error'>Delete</button>
 						<button type='button' class='appender pure-button pure-button-success'>Insert</button>
+						<button type='button' class='primary pure-button pure-button-success'>Primary</button>
 					</div>
 <% for (file of post.files) { -%>
 <% var url = '/posts/' + post.id + '/' + file; -%>
@@ -47,6 +49,7 @@
 						<h3><%= file %></h3>
 						<button type='button' class='remover pure-button pure-button-error' onclick='deleteFile("<%= file %>");'>Delete</button>
 						<button type='button' class='appender pure-button pure-button-success' onclick='appendFile("<%= file %>");'>Insert</button>
+						<button type='button' class='primary pure-button pure-button-secondary' onclick='setPrimary("<%= file %>");'>Primary</button>
 					</div>
 <% } -%>
 				</div>
@@ -73,6 +76,7 @@
 								newItem.children('a').attr('href', '/posts/<%= post.id %>/' + file.name);
 								newItem.children('button.remover').attr('onclick', 'deleteFile("' + file.name + '");');
 								newItem.children('button.appender').attr('onclick', 'appendFile("' + file.name + '");');
+								newItem.children('button.primary').attr('onclick', 'setPrimary("' + file.name + '");');
 								newItem.children('h3').html(file.name);
 								newItem.attr('data-name', file.name);
 								newItem.removeClass('hidden');
@@ -93,6 +97,10 @@
 				function appendFile(file) {
 					var url = '/posts/<%= post.id %>/' + file;
 					$('textarea').val($('textarea').val() + '\n<a href="' + url + '"><img src="' + url + '"></a>');
+				}
+
+				function setPrimary(file) {
+					$('input[name=image]').val(file);
 				}
 
 				function deleteFile(name) {

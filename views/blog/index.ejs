@@ -1,14 +1,18 @@
 <% locals.main_classes = 'pure-g' -%>
+<% locals.post = locals.data || [] -%>
 <% include ../partials/header %>
 			<article class='pure-u-2-3 blog-content'>
-				<h1>The Land Rover 101 Ambulance</h1>
-				<p class='blog-date'>23/02/16</p>
-				<hr />
+				<header>
+					<h1><%= post.title %></h1>
+					<time><%= new Date(post.published) %></time>
+				</header>
+				<hr>
 				<div class='slideshow'>
-
+					<img src='/posts/<%= post.id %>/<%= post.image %>' alt='<%= post.title %>'>
 				</div>
+
 				<p>
-					A work in progress
+<%- post.body -%>
 				</p>
 			</article>
 
