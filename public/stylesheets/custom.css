@@ -6,16 +6,13 @@ html, body {
 	background-color: mintcream;
 }
 
-[class*='pure-u'] {
-	box-sizing: content-box;
+hr {
+	clear: both;
+	border: 1px solid #2b8961;
 }
 
-hr { width: 90%; }
 
-main {
-	width: 95%;
-	margin: 0 auto;
-}
+/* Global nav bar */
 
 nav {
 	font-family: 'Signika Negative', sans-serif;
@@ -32,6 +29,9 @@ nav {
 		/*color: #404040;*/
 	}
 
+
+/* Global footer */
+
 footer {
 	margin-top: 1em;
 	text-align: center;
@@ -46,6 +46,9 @@ footer {
 
 	footer a:hover { text-decoration: underline; }
 
+
+/* Header logo */
+
 #logo {
 	font-size: 0.5em;
 	border-radius: 0 50px 50px 0;
@@ -53,47 +56,8 @@ footer {
 
 #logo, .pure-menu-item a:hover { background-color: #003214; }
 
-#content {
-	width: 95%;
-	margin: 0 auto;
-}
 
-.blog-content {
-	margin-top: 1.5em;
-}
-
-.blog-content h1 {
-	width: 100%;
-	text-align: center;
-	margin: 0.25em;
-}
-
-.blog-content header {
-	text-align: right;
-}
-
-.blog-content time {
-	font-style: italic;
-	color: #696969;
-	padding-right: 3em;
-}
-
-.blog-sidebar, .blog-intro {
-	text-align: center;
-}
-
-.blog-content .slideshow {
-	text-align: center;
-}
-
-.blog-content .slideshow img {
-	width: 75%;
-}
-
-.blog-content p img {
-	display: inline-block;
-	max-width: 30%;
-}
+/* Generic alignment classes */
 
 .padded { padding: 2em; }
 
@@ -101,7 +65,9 @@ footer {
 
 .hidden { display: none; }
 
+
 /* PureCSS extra button colours */
+
 .pure-button-success, .pure-button-secondary, .pure-button-warning, .pure-button-error {
 	color: white !important;
 	border-radius: 4px;
@@ -115,6 +81,91 @@ footer {
 .pure-button-warning { background-color: rgb(223, 117, 20) !important; }
 
 .pure-button-secondary { background-color: rgb(66, 184, 221) !important; }
+
+
+/* PureCSS alignment fix */
+
+[class*='pure-u'] { box-sizing: border-box; }
+
+
+/* Index blog posts */
+
+.blog-post {
+	background-color: white;
+	padding: 1em;
+	border-left: 3px solid #ebf9f3;
+	border-right: 3px solid #ebf9f3;
+	position: relative;
+}
+
+.blog-post img {
+	box-sizing: border-box;
+	border: 2px solid lightgray;
+}
+
+.blog-post aside {
+	margin-top: 1em;
+	position: absolute;
+	right: -8.3333%;
+	border: 1px solid lightgray;
+}
+
+.blog-post header {
+	text-align: left;
+	position: relative;
+	width: 100%;
+}
+
+	.blog-post header h1 {
+		margin: 0 5em 0 0;
+		margin-right: 5em;
+	}
+
+	.blog-post header time {
+		position: absolute;
+		color: #003214;
+		bottom: 0;
+		right: 0;
+	}
+
+.blog-post .primary-image {
+	max-width: 90%;
+	max-height: 480px;
+	overflow: hidden;
+	text-align: center;
+	margin-bottom: 1em;
+}
+
+	.blog-post .primary-image img {
+		height: 480px;
+		vertical-align: top;
+	}
+
+.blog-post div {
+	width: 90%;
+	margin: 2em 0 0 5%;
+	border-top: 2px solid lightgray;
+}
+
+	.blog-post div p {
+		font-size: 1.1em;
+	}
+
+	.blog-post div img {
+		float: left;
+		max-height: 256px;
+		max-width: 40%;
+		display: inline-block;
+		vertical-align: top;
+		margin: 0 1em 1em 0;
+	}
+
+	.blog-post h2, h3, h4 {
+		clear: both;
+	}
+
+
+/* Post editor - File Upload Gallery */
 
 #uploader-gallery div {
 	width: 45%;
