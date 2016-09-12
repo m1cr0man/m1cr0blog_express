@@ -90,9 +90,10 @@ footer {
 
 /* Index blog posts */
 
-.blog-post {
+.blog-body, .blog-post {
 	background-color: white;
 	padding: 1em;
+	margin-bottom: 1em;
 	border-left: 3px solid #ebf9f3;
 	border-right: 3px solid #ebf9f3;
 	position: relative;
@@ -164,6 +165,34 @@ footer {
 		clear: both;
 	}
 
+
+/* Index next articles */
+
+.next-article {
+	width: 95%;
+	height: 192px;
+	margin-right: 5%;
+	border: 2px solid lightgray;
+	display: inline-block;
+	position: relative;
+	background-size: cover;
+	background-position: top center;
+}
+
+.next-article:hover { border: 2px solid #2b8961; }
+
+.next-article h3 {
+	width: 100%;
+	margin: 0;
+	padding: 0.1em 0.25em;
+	position: absolute;
+	bottom: 0;
+	box-sizing: border-box;
+	color: #e9e7c7;
+	text-align: center;
+	text-decoration: none;
+	background-color: rgba(43, 137, 97, 0.5);
+}
 
 /* Post editor - File Upload Gallery */
 

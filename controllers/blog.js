@@ -4,11 +4,11 @@ const postModel = require('../models/post');
 const VIEW_DIR = 'blog/';
 
 module.exports = {
-	index: (req, res) => {
-		var data = postModel.getLatest();
-		data.body = marked(data.markdown);
-		return res.render(VIEW_DIR + 'index', {data: data});
-	},
+	index: (req, res) =>
+		postModel.getLatest((latest_post, next_posts) => {
+			latest_post.body = marked(latest_post.markdown);
+			return res.render(VIEW_DIR + 'index', {data: latest_post, next_posts: next_posts});
+		}),
 
 	list: (req, res) =>
 		res.render(VIEW_DIR + 'list', {data: postModel.getAll()}),

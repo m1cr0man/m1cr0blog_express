@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const path = require('path');
+const _ = require('lodash');
 const fs = require('fs');
 
 const j = path.join;
@@ -37,23 +38,21 @@ module.exports = {
 	getAll: _ =>
 		readMeta(),
 
-	getLatest: _ => {
+	getLatest: cb => {
 		var all_meta = readMeta();
 
-		var latest_post = null;
-		for (id in all_meta) {
-			var post = all_meta[id];
-			if (post.draft) continue;
-			if (!latest_post || latest_post.published < post.published) {
-				latest_post = post;
-				latest_post.id = id;
-			}
-		}
+		// Add IDs to objects
+		for (id in all_meta) all_meta[id].id = id;
+
+		// Sort by date
+		var sorted_meta = _.sortBy(_.filter(all_meta, val => !val.draft), val => val.date);
+		var latest_post = sorted_meta[0];
+		var next_posts = sorted_meta.slice(1, 4);
 
 		latest_post.markdown = readMarkdown(latest_post.id);
 		latest_post.files = readFiles(latest_post.id);
 
-		return latest_post;
+		return cb(latest_post, next_posts);
 	},
 
 	get: id => {
