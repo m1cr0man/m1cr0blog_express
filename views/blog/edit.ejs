@@ -40,7 +40,7 @@
 						<h3></h3>
 						<button type='button' class='remover pure-button pure-button-error'>Delete</button>
 						<button type='button' class='appender pure-button pure-button-success'>Insert</button>
-						<button type='button' class='primary pure-button pure-button-success'>Primary</button>
+						<button type='button' class='primary pure-button pure-button-secondary'>Primary</button>
 					</div>
 <% for (file of post.files) { -%>
 <% var url = '/posts/' + post.id + '/' + file; -%>
@@ -55,15 +55,34 @@
 				</div>
 			</form>
 
-			<article class='pure-u-2-3'>
+			<span class='pure-u-1-8'></span>
+
+			<article class='pure-u-3-4 blog-post'>
+				<header>
+					<h1></h1>
+					<time></time>
+				</header>
+
+				<hr>
+
+				<figure class='primary-image'>
+					<img>
+				</figure>
+
+				<div></div>
 			</article>
+
+			<span class='pure-u-1-8'></span>
 
 			<script type='text/javascript' src='/javascripts/thirdparty/marked.js'></script>
 			<script type='text/javascript' src='/javascripts/thirdparty/jquery-3.1.0.min.js'></script>
 			<script type='text/javascript' src='/javascripts/thirdparty/jquery.form.min.js'></script>
 			<script type='text/javascript'>
 				function preview() {
-					$('article').html(marked($('textarea').val()));
+					$('article h1').html($('[name=title]').val());
+					$('article time').html((new Date()).toLocaleString());
+					$('article img').attr('src', '/posts/<%= post.id %>/' + $('[name=image]').val());
+					$('article div').html(marked($('textarea').val()));
 				}
 
 				function uploadImage() {
