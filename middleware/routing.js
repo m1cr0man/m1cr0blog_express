@@ -31,6 +31,6 @@ adminRouter.get('/blog/:id/deleteFile/:fileName', blog.deleteFile);
 
 // Main blog
 router.get('/', blog.index);
-router.get('/:url', blog.get);
+router.get('/:url', blog.view);
 
 module.exports = router;

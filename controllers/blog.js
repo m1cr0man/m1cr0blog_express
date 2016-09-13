@@ -6,8 +6,8 @@ module.exports = {
 	index: (req, res) =>
 		res.render(VIEW_DIR + 'index', {data: postModel.getLatest()}),
 
-	get: (req, res, next) => {
-		var data = postModel.get(req.params.url);
+	view: (req, res, next) => {
+		var data = postModel.find(req.params.url);
 		if (!data) return next();
 		return res.render(VIEW_DIR + 'index', {data: data});
 	},
@@ -42,11 +42,11 @@ module.exports = {
 	upload: (req, res) => {
 		if (!req.files.file) return res.status(400).send('No file');
 
-		var result = postModel.addFile(req.params.id, req.files.file);
+		return postModel.addFile(req.params.id, req.files.file, err => {
+			if (err) return res.status(400).send(err);
 
-		if (typeof result == 'string') return res.status(400).send(result);
-
-		return res.status(200).send('ok');
+			return res.status(200).send('ok');
+		});
 	},
 
 	deleteFile: (req, res) => {

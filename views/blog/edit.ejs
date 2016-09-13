@@ -111,8 +111,8 @@
 				}
 
 				function appendFile(file) {
-					var url = '/posts/<%= post.id %>/' + file;
-					$('textarea').val($('textarea').val() + '\n<a href="' + url + '"><img src="' + url + '"></a>');
+					var val = '<a href="/posts/<%= post.id %>/' + file + '"><img src="/posts/<%= post.id %>/h384/' + file + '"></a>';
+					return window.prompt('Ctrl+C -> Enter', val);
 				}
 
 				function setPrimary(file) {
