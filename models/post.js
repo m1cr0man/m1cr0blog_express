@@ -146,6 +146,35 @@ module.exports = {
 		writeMarkdown(id, input.markdown);
 	},
 
+	delete: id => {
+		var all_meta = readMeta();
+
+		if (!all_meta[id]) return;
+
+		// Delete markdown
+		if (fs.existsSync(POST_STORAGE_DIR + id)) fs.unlinkSync(POST_STORAGE_DIR + id);
+
+		// Delete metadata
+		delete all_meta[id];
+		writeMeta(all_meta);
+
+		// Delete files
+		var root_path = FILE_STORAGE_DIR + id;
+
+		if (!fs.existsSync(root_path)) return;
+
+		for (file of fs.readdirSync(root_path)) {
+			if (fs.lstatSync(j(root_path, file)).isDirectory()) {
+				for (sub_file of fs.readdirSync(j(root_path, file))) {
+					fs.unlinkSync(j(root_path, file, sub_file));
+				}
+				fs.rmdirSync(j(root_path, file));
+			} else {
+				fs.unlinkSync(j(root_path, file));
+			}
+		}
+	},
+
 	addFile: (id, file, cb) => {
 		if (!file) return cb('No file');
 

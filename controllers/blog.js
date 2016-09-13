@@ -6,6 +6,9 @@ module.exports = {
 	index: (req, res) =>
 		res.render(VIEW_DIR + 'index', {data: postModel.getLatest()}),
 
+	projects: (req, res) =>
+		res.render(VIEW_DIR + 'projects'),
+
 	view: (req, res, next) => {
 		var data = postModel.find(req.params.url);
 		if (!data) return next();
@@ -36,6 +39,11 @@ module.exports = {
 
 	publish: (req, res) => {
 		postModel.publish(req.params.id);
+		return res.redirect('../');
+	},
+
+	delete: (req, res) => {
+		postModel.delete(req.params.id);
 		return res.redirect('../');
 	},
 

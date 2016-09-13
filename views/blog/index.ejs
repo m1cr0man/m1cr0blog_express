@@ -35,7 +35,7 @@
 <% for (next_post of post.next_posts) { -%>
 					<span class='pure-u-1-12'></span>
 					<div class='pure-u-1-2'>
-						<a href='<%= next_post.url %>' class='next-article' style='background-image: url("/posts/<%= next_post.id %>/<%= next_post.image %>");'>
+						<a href='<%= next_post.url %>' class='next-article' style='background-image: url("/posts/<%= next_post.id %>/h256/<%= next_post.image %>");'>
 							<h3><%= next_post.title %></h3>
 						</a>
 					</div>

@@ -27,10 +27,12 @@ adminRouter.all('/blog/add', blog.add);
 adminRouter.all('/blog/:id', blog.edit);
 adminRouter.get('/blog/:id/publish', blog.publish);
 adminRouter.post('/blog/:id/upload', blog.upload);
+adminRouter.get('/blog/:id/delete', blog.delete);
 adminRouter.get('/blog/:id/deleteFile/:fileName', blog.deleteFile);
 
 // Main blog
 router.get('/', blog.index);
+router.get('/projects', blog.projects);
 router.get('/:url', blog.view);
 
 module.exports = router;

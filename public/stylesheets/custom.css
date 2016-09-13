@@ -56,6 +56,10 @@ footer {
 
 #logo, .pure-menu-item a:hover { background-color: #003214; }
 
+.pure-menu-list {
+	width: 100%;
+}
+
 
 /* Generic alignment classes */
 
@@ -64,6 +68,12 @@ footer {
 .centered { text-align: center; }
 
 .hidden { display: none; }
+
+.big-image {
+	max-width: 100%;
+	max-height: 480px;
+	text-align: center;
+}
 
 
 /* PureCSS extra button colours */
@@ -98,7 +108,7 @@ footer {
 	position: relative;
 }
 
-.blog-post img {
+.blog-body img, .blog-post img {
 	box-sizing: border-box;
 	border: 2px solid lightgray;
 }
@@ -152,7 +162,7 @@ footer {
 		font-size: 1.1em;
 	}
 
-	.blog-post div img {
+	.blog-post div img, .blog-body > img, .blog-body > a > img {
 		float: left;
 		max-height: 384px;
 		max-width: 40%;
