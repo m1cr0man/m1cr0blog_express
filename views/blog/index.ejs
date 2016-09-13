@@ -1,6 +1,5 @@
 <% locals.main_classes = 'pure-g' -%>
-<% locals.post = locals.data || {} -%>
-<% locals.next_posts = locals.next_posts || [] -%>
+<% locals.post = locals.data || {next_posts: []} -%>
 <% include ../partials/header %>
 
 			<span class='pure-u-1-8'></span>
@@ -18,7 +17,7 @@
 				</figure>
 
 				<div>
-<%- post.body %>
+<%- post.markdown %>
 				</div>
 			</article>
 
@@ -32,7 +31,7 @@
 				<div class='pure-g'>
 					<div class='pure-u-2-3'>
 						<div class='pure-g'>
-<% for (next_post of next_posts) { -%>
+<% for (next_post of post.next_posts) { -%>
 							<div class='pure-u-1-2'>
 								<a href='<%= next_post.url %>' class='next-article' style='background-image: url("/posts/<%= next_post.id %>/<%= next_post.image %>");'>
 									<h3><%= next_post.title %></h3>

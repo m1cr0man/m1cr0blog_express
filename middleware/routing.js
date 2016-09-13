@@ -6,9 +6,6 @@ const admin = require('../controllers/admin');
 const router = express.Router();
 const adminRouter = express.Router();
 
-// Main blog
-router.get('/', blog.index);
-
 // Admin authentication
 router.use('/admin', adminRouter);
 adminRouter.all('/login', users.login);
@@ -31,5 +28,9 @@ adminRouter.all('/blog/:id', blog.edit);
 adminRouter.get('/blog/:id/publish', blog.publish);
 adminRouter.post('/blog/:id/upload', blog.upload);
 adminRouter.get('/blog/:id/deleteFile/:fileName', blog.deleteFile);
+
+// Main blog
+router.get('/', blog.index);
+router.get('/:url', blog.get);
 
 module.exports = router;

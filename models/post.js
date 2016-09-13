@@ -1,6 +1,7 @@
+const marked = require('marked');
 const crypto = require('crypto');
 const path = require('path');
-const _ = require('lodash');
+const lo = require('lodash');
 const fs = require('fs');
 
 const j = path.join;
@@ -24,42 +25,64 @@ if (!fs.existsSync(META_FILE)) fs.writeFileSync(META_FILE, JSON.stringify({}), '
 
 var protectedRead = path => fs.existsSync(path) && fs.readFileSync(path, 'utf8') || '';
 
-var readMeta = _ => JSON.parse(protectedRead(META_FILE)) || {};
+var writeMarkdown = (id, markdown) => fs.writeFileSync(POST_STORAGE_DIR + id, markdown, 'utf8');
+
+var readMarkdown = id => marked(protectedRead(POST_STORAGE_DIR + id));
+
+var readFiles = id => fs.existsSync(FILE_STORAGE_DIR + id) && fs.readdirSync(FILE_STORAGE_DIR + id) || [];
 
 var writeMeta = meta => fs.writeFileSync(META_FILE, JSON.stringify(meta), 'utf8');
 
-var readMarkdown = id => protectedRead(POST_STORAGE_DIR + id);
+var readMeta = _ => {
+	var data = JSON.parse(protectedRead(META_FILE)) || {};
 
-var writeMarkdown = (id, markdown) => fs.writeFileSync(POST_STORAGE_DIR + id, markdown, 'utf8');
+	// Add IDs to objects
+	for (id in data) data[id].id = id;
 
-var readFiles = id => fs.existsSync(FILE_STORAGE_DIR + id) && fs.readdirSync(FILE_STORAGE_DIR + id) || [];
+	return data;
+}
 
 module.exports = {
 	getAll: _ =>
 		readMeta(),
 
-	getLatest: cb => {
+	getLatest: _ => {
 		var all_meta = readMeta();
 
-		// Add IDs to objects
-		for (id in all_meta) all_meta[id].id = id;
-
 		// Sort by date
-		var sorted_meta = _.sortBy(_.filter(all_meta, val => !val.draft), val => val.date);
+		var sorted_meta = lo.sortBy(lo.filter(all_meta, val => !val.draft), val => val.date);
 		var latest_post = sorted_meta[0];
-		var next_posts = sorted_meta.slice(1, 4);
 
+		latest_post.next_posts = sorted_meta.slice(1, 4);
 		latest_post.markdown = readMarkdown(latest_post.id);
 		latest_post.files = readFiles(latest_post.id);
 
-		return cb(latest_post, next_posts);
+		return latest_post;
 	},
 
-	get: id => {
-		var data = readMeta()[id] || {};
-		data.markdown = readMarkdown(id);
-		data.files = readFiles(id);
-		data.id = id;
+	get: url => {
+		var all_meta = readMeta();
+
+		// 404
+		var all_meta_url = lo.keyBy(all_meta, val => val.url);
+		if (!url || !all_meta_url[url]) return false;
+
+		var data = all_meta_url[url];
+		console.log(data.id);
+		data.markdown = readMarkdown(data.id);
+		data.files = readFiles(data.id);
+
+		// Get a list of "next" articles
+		var sorted_meta = lo.sortBy(lo.filter(all_meta, val => !val.draft), val => val.date);
+		var article_index = sorted_meta.indexOf(data);
+		data.next_posts = [];
+
+		// One newer, if any
+		if (article_index > 0) data.next_posts.push(sorted_meta[0]);
+
+		// One earlier, if any
+		if (article_index < sorted_meta.length - 1) data.next_posts.push(sorted_meta[sorted_meta.length - 1]);
+
 		return data;
 	},
 
