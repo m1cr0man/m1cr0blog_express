@@ -1,5 +1,6 @@
 <% locals.main_classes = 'pure-g' -%>
 <% locals.post = locals.data || {next_posts: []} -%>
+<% locals.title = post.title || '' -%>
 <% include ../partials/header %>
 
 			<span class='pure-u-1-8'></span>
@@ -22,6 +23,18 @@
 <%- post.markdown %>
 				</div>
 			</article>
+
+			<span class='pure-u-1-8'></span>
+			<span class='pure-u-1-8'></span>
+
+			<section class='pure-u-3-4 blog-body'>
+				<header>
+					<h2>Comments</h2>
+					<hr>
+				</header>
+				<div id='disqus_thread'></div>
+				<noscript>You'll need to enable Javascript to see <a href="https://disqus.com/?ref_noscript">Disqus Comments.</a></noscript>
+			</section>
 
 			<span class='pure-u-1-8'></span>
 			<span class='pure-u-1-8'></span>
@@ -57,6 +70,17 @@
 			<script id='twitter-wjs' type='text/javascript' src='https://platform.twitter.com/widgets.js'></script>
 
 			<script type='text/javascript'>
+
+				// URL Setter
 				window.history.pushState('object or string', 'Title', '<%= post.url %>');
+
+				// Disqus Config
+				var disqus_config = function() {
+					this.page.url = '//www.m1cr0man.com/<%= post.url %>';
+					this.page.identifier = '<%= post.id %>';
+				}
 			</script>
+
+			<!-- Disqus -->
+			<script type='text/javascript' src='/javascripts/disqus.js'></script>
 <% include ../partials/footer %>
