@@ -1,0 +1,43 @@
+<% locals.file = locals.data || {} -%>
+<% locals.title = file.filename + ' - M1cr0man\'s Uploads' -%>
+<% include ../partials/header %>
+
+			<section class='blog-body upload'>
+				<header>
+					<h1><%= file.filename %></h1>
+					<time><%= file.date.toLocaleString() %></time>
+					<b>Views: <%= file.views %></b>
+					<hr>
+				</header>
+
+				<p>
+
+<% if (file.type == 'image') {-%>
+					<a href='<%- file.path %>'><img src='<%- file.path %>' alt='<%= file.filename %> - Click to download'></a>
+
+<% } else if (file.type == 'text') { -%>
+					<pre class='line-numbers show-language' data-src='<%- file.path %>'></pre>
+					<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.1/prism.min.js'></script>
+
+<% } else if (file.type == 'video') { -%>
+					<div id='video'>
+						<video class='video-js vjs-default-skin' controls preload='auto' data-setup='{"fluid": true}'>
+							<source src='<%= file.path %>' type='<%= file.mimeType %>' />
+							To view this video please enable JavaScript, or try using a web browser that <a href='//videojs.com/html5-video-support/' target='_blank'>supports HTML5 video</a>
+						</video>
+					</div>
+					<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/video.js/5.13.0/video.min.js'></script>
+
+<% } else if (file.type == 'audio') { -%>
+					<audio controls>
+						<source src='<%- file.path %>' type='<%= data.mimeType %>'>
+						Your browser does not support the audio element. <a href='<%- file.path %>'>Click Here</a> to download the file instead.
+					</audio>
+
+<% } else { -%>
+					Preview not available due to the file type - Sorry! <a href='<%- file.path %>'>Click Here</a> to download it.
+<% } -%>
+				</p>
+			</section>
+
+<% include ../partials/footer %>

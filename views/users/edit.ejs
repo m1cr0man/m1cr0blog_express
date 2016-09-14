@@ -6,9 +6,11 @@
 
 			<form class='pure-u-1 pure-u-lg-1-2 pure-form pure-form-stacked' action='' method='POST'>
 				<label for='username'>Username</label>
-				<input type='text' name='username' autocomplete='username' placeholder='Username' value='<%= user.username || locals.username %>' autofocus>
+				<input type='text' name='username' autocomplete='username' placeholder='Username' value='<%= user.username %>' autofocus>
 				<label for='password'>Password</label>
 				<input type='password' name='password' autocomplete='new-password' placeholder='Password' value=''>
+				<label for='userID'>Uploads User ID</label>
+				<input type='text' name='userID' placeholder='Uploads User ID' value='<%= user.userID %>'>
 				<br>
 				<button type='submit' class='pure-button pure-button-success'><%= (user == locals.data)? 'Update' : 'Add' %></button>
 			</form>

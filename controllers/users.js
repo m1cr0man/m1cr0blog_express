@@ -41,7 +41,11 @@ module.exports = {
 	},
 
 	edit: (req, res, next) => {
-		if (req.method != 'POST') return res.render('users/edit', {username: req.params.username, data: userModel.get(req.params.username)});
+		if (req.method != 'POST') {
+			var data = userModel.get(req.params.username);
+			data.username = req.params.username;
+			return res.render('users/edit', {data: data});
+		}
 
 		if (!userModel.verify(req.body)) return res.status(400).render('users/edit', {error: 'Invalid input data', data: req.body});
 
