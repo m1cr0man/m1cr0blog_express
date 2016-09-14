@@ -4,7 +4,7 @@ const VIEW_DIR = 'blog/';
 
 module.exports = {
 	index: (req, res) =>
-		res.render(VIEW_DIR + 'index', {data: postModel.getLatest()}),
+		res.render(VIEW_DIR + 'index', {data: postModel.getLatest(), isLanding: true}),
 
 	projects: (req, res) =>
 		res.render(VIEW_DIR + 'projects'),

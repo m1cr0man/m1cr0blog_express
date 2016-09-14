@@ -101,11 +101,15 @@ footer {
 /* Index blog posts */
 
 .blog-body, .blog-post {
-	background-color: white;
-	padding: 1em 1em 0 1em;
+	width: 75%;
+	min-width: 480px;
+	margin: 0 auto;
+	padding: 1em;
 	border-left: 3px solid #ebf9f3;
 	border-right: 3px solid #ebf9f3;
 	position: relative;
+	clear: both;
+	background-color: white;
 }
 
 .blog-body img, .blog-post img {
@@ -179,11 +183,11 @@ footer {
 /* Index next articles */
 
 .next-article {
-	width: 100%;
+	width: 90%;
 	height: 256px;
-	margin-top: 1em;
+	margin: 1em auto;
 	border: 2px solid lightgray;
-	display: inline-block;
+	display: block;
 	position: relative;
 	background-size: cover;
 	background-position: center center;
