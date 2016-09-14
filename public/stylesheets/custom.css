@@ -98,6 +98,14 @@ footer {
 [class*='pure-u'] { box-sizing: border-box; }
 
 
+/* Twitter widget alignment fix */
+
+#twitter {
+	max-width: 520px;
+	margin: 0 auto;
+}
+
+
 /* Index blog posts */
 
 .blog-body, .blog-post {
@@ -161,10 +169,6 @@ footer {
 	margin: 1em 0 0 5%;
 	border-top: 2px solid lightgray;
 }
-
-	.blog-post div p {
-		font-size: 1.1em;
-	}
 
 	.blog-post div img, .blog-body > img, .blog-body > a > img {
 		float: left;
