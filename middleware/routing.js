@@ -11,7 +11,7 @@ const adminRouter = express.Router();
 router.use('/admin', adminRouter);
 adminRouter.all('/login', users.login);
 adminRouter.all('/logout', users.logout);
-// adminRouter.use('/', users.isLoggedIn);
+adminRouter.use('/', users.isLoggedIn);
 
 // All links past this point require authentication
 adminRouter.get('/', admin.index);
