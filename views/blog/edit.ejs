@@ -43,9 +43,8 @@
 						<button type='button' class='primary pure-button pure-button-secondary'>Primary</button>
 					</div>
 <% for (file of post.files) { -%>
-<% var url = '/posts/' + post.id + '/' + file; -%>
 					<div data-name='<%= file %>'>
-						<a href='<%= url %>'><img src='<%= url %>'></a>
+						<a href='/posts/<%= post.id %>/<%= file %>'><img src='/posts/<%= post.id %>/h256/<%= file %>'></a>
 						<h3><%= file %></h3>
 						<button type='button' class='remover pure-button pure-button-error' onclick='deleteFile("<%= file %>");'>Delete</button>
 						<button type='button' class='appender pure-button pure-button-success' onclick='appendFile("<%= file %>");'>Insert</button>
@@ -81,7 +80,7 @@
 				function preview() {
 					$('article h1').html($('[name=title]').val());
 					$('article time').html((new Date()).toLocaleString());
-					$('article img').attr('src', '/posts/<%= post.id %>/' + $('[name=image]').val());
+					$('article img').attr('src', '/posts/<%= post.id %>/h600/' + $('[name=image]').val());
 					$('article div').html(marked($('textarea').val()));
 				}
 
@@ -104,7 +103,7 @@
 						},
 						success: function() {
 							$('#uploader-gallery a img').each(function() {
-								$(this).attr('src', $(this).parent().attr('href'));
+								$(this).attr('src', '/posts/<%= post.id %>/h256/' + $(this).parent().parent().attr('data-name'));
 							});
 						},
 						error: function(err) {

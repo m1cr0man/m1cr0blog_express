@@ -24,6 +24,7 @@ const IMAGE_TYPES = [
 	'jpeg',
 	'gif'
 ]
+const RESOLUTIONS = [256, 384, 600];
 
 // Initialise folders + meta file
 if (!fs.existsSync(POST_STORAGE_DIR)) fs.mkdirSync(POST_STORAGE_DIR);
@@ -39,7 +40,7 @@ var readMarkdown = id => protectedRead(POST_STORAGE_DIR + id);
 var readFiles = id => {
 	if (!fs.existsSync(FILE_STORAGE_DIR + id)) return [];
 	var data = fs.readdirSync(FILE_STORAGE_DIR + id);
-	lo.remove(data, val => val == 'h256' || val == 'h384');
+	lo.remove(data, val => (RESOLUTIONS.indexOf(+val.substr(1)) + 1));
 	return data;
 }
 
@@ -186,49 +187,61 @@ module.exports = {
 			fs.mkdirSync(j(FILE_STORAGE_DIR, id));
 		}
 
-		// Move the file to the right place
+		// Get the right path
 		var path = j(FILE_STORAGE_DIR, id, file.filename);
-		fs.renameSync(file.file, path);
 
-		// Create thumbnails if necessary
-		if (!(IMAGE_TYPES.indexOf(file.filename.toLowerCase().match(/[^\.]+$/g)[0]) + 1)) return cb();
-
-		var path_256 = j(FILE_STORAGE_DIR, id, 'h256');
-		var path_384 = j(FILE_STORAGE_DIR, id, 'h384')
-		if (!fs.existsSync(path_256)) fs.mkdirSync(path_256);
-		if (!fs.existsSync(path_384)) fs.mkdirSync(path_384);
-
-		return lwip.open(path, (err, image) => {
+		// Reencode the image to reduce size
+		lwip.open(file.file, (err, orig_img) => {
 			if (err) return cb(err);
 
-			var ratio_384 = 384 / image.height();
-			image.batch()
-				.scale(ratio_384)
-				.writeFile(j(path_384, file.filename), err => {
-					if (err) return cb(err);
+			// Downscale if necessary
+			var downscale = 1440 / orig_img.height();
+			if (downscale >= 1) downscale = 1;
 
-					var ratio_256 = 256 / image.height();
-					return image.batch()
-						.scale(ratio_256)
-						.writeFile(j(path_256, file.filename), err => {
+			orig_img.batch()
+				.scale(downscale)
+				.writeFile(path, err => {
+					if (err) return console.log(err) || cb(err);
+
+					// Create thumbnails if necessary
+					if (!(IMAGE_TYPES.indexOf(file.filename.toLowerCase().match(/[^\.]+$/g)[0]) + 1)) return cb();
+
+					var completed = 0;
+					return RESOLUTIONS.forEach(resolution => {
+						var img_path = j(FILE_STORAGE_DIR, id, 'h' + resolution);
+						if (!fs.existsSync(img_path)) fs.mkdirSync(img_path);
+
+						lwip.open(path, (err, image) => {
 							if (err) return cb(err);
 
-							return cb();
+							var ratio = resolution / image.height();
+
+							image.batch()
+								.scale(ratio)
+								.writeFile(j(img_path, file.filename), err => {
+									if (err) return console.log(err) || cb(err);
+
+									completed += 1;
+									if (completed == RESOLUTIONS.length) return cb();
+								});
 						});
-				});
+					});
+				})
 		});
+
+
 	},
 
 	removeFile: (id, fileName) => {
 		var root_path = j(FILE_STORAGE_DIR, id);
 		var path = j(root_path, fileName);
-		var path_256 = j(root_path, 'h256', fileName);
-		var path_384 = j(root_path, 'h384', fileName);
 		if (fs.existsSync(path)) fs.unlinkSync(path);
 
-		// Remove thumbnails
-		if (fs.existsSync(path_256)) fs.unlinkSync(path_256);
-		if (fs.existsSync(path_384)) fs.unlinkSync(path_384);
+		// Remove image + thumbnails
+		RESOLUTIONS.forEach(resolution => {
+			if (fs.existsSync(j(root_path, 'h' + resolution, fileName))) fs.unlinkSync(j(root_path, 'h' + resolution, fileName));
+		});
+
 		return false;
 	},
 
