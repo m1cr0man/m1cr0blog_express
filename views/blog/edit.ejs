@@ -128,8 +128,14 @@
 					});
 				}
 
+				function updateUrl() {
+					$('[name=url]').val(($('[name=title]').val() || '').toLowerCase().replace(/[^\w]+/g, '-'));
+				}
+
 				$(document).ready(function() {
 					$('#image-uploader input').change(uploadImage);
+
+					$('[name=title]').change(updateUrl);
 				});
 			</script>
 <% include ../partials/footer %>
