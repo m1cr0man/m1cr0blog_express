@@ -63,7 +63,7 @@ module.exports = {
 		var all_meta = readMeta();
 
 		// Sort by date
-		var sorted_meta = lo.sortBy(lo.filter(all_meta, val => !val.draft), val => val.date);
+		var sorted_meta = lo.sortBy(lo.filter(all_meta, val => !val.draft), val => val.published);
 		var latest_post = sorted_meta[0];
 
 		// Save view count
@@ -99,7 +99,7 @@ module.exports = {
 		data.markdown = marked(readMarkdown(data.id));
 
 		// Get a list of "next" articles
-		var sorted_meta = lo.sortBy(lo.filter(all_meta, val => !val.draft), val => val.date);
+		var sorted_meta = lo.sortBy(lo.filter(all_meta, val => !val.draft), val => val.published);
 		var article_index = sorted_meta.indexOf(data);
 		data.next_posts = [];
 

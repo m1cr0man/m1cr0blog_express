@@ -2,9 +2,15 @@ const postModel = require('../models/post');
 
 const VIEW_DIR = 'blog/';
 
+function formatDate(data) {
+	var raw_date = new Date(data.published);
+	data.date_formatted = raw_date.getDate() + '/' + (raw_date.getMonth() + 1) + '/' + raw_date.getFullYear();
+	return data;
+}
+
 module.exports = {
 	index: (req, res) =>
-		res.render(VIEW_DIR + 'index', {data: postModel.getLatest(), isLanding: true}),
+		res.render(VIEW_DIR + 'index', {data: formatDate(postModel.getLatest()), isLanding: true}),
 
 	projects: (req, res) =>
 		res.render(VIEW_DIR + 'projects'),
@@ -12,7 +18,7 @@ module.exports = {
 	view: (req, res, next) => {
 		var data = postModel.find(req.params.url);
 		if (!data) return next();
-		return res.render(VIEW_DIR + 'index', {data: data});
+		return res.render(VIEW_DIR + 'index', {data: formatDate(data)});
 	},
 
 	list: (req, res) =>
