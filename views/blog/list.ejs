@@ -13,6 +13,7 @@
 						<tr>
 							<th>Title</th>
 							<th>Date Published</th>
+							<th>Views</th>
 							<th>Tags</th>
 						</tr>
 					</thead>
@@ -25,6 +26,7 @@ for (url in meta) {
 						<tr onclick='window.location.href = "<%= url %>/";'>
 							<td><%= data.title %></td>
 							<td><%= data.draft && 'DRAFT' || (new Date(data.published)).toLocaleDateString('en-GB') %></td>
+							<td><%= data.views %></td>
 							<td><%= data.tags %></td>
 						</tr>
 <% } -%>

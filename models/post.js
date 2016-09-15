@@ -66,6 +66,10 @@ module.exports = {
 		var sorted_meta = lo.sortBy(lo.filter(all_meta, val => !val.draft), val => val.date);
 		var latest_post = sorted_meta[0];
 
+		// Save view count
+		all_meta[latest_post.id].views += 1;
+		writeMeta(all_meta);
+
 		latest_post.next_posts = sorted_meta.slice(1, 4);
 		latest_post.markdown = marked(readMarkdown(latest_post.id));
 		latest_post.files = readFiles(latest_post.id);
@@ -79,6 +83,7 @@ module.exports = {
 		var data = all_meta[id];
 		data.markdown = readMarkdown(id);
 		data.files = readFiles(id);
+		data.views += 1;
 
 		return data;
 	},
@@ -121,7 +126,8 @@ module.exports = {
 		} while (all_meta[new_id]);
 
 		all_meta[new_id] = {
-			draft: true
+			draft: true,
+			views: 0
 		}
 
 		writeMeta(all_meta);
@@ -141,6 +147,12 @@ module.exports = {
 		if (input.url) all_meta[id].url = input.url;
 		if (input.title) all_meta[id].title = input.title;
 		if (input.image) all_meta[id].image = input.image;
+
+		// Because the get function above is used for the edit page
+		// I need to decrement the value by one at least
+		all_meta[id].views -= 1;
+		if (all_meta[id].views < 0) all_meta[id].views = 0;
+
 		writeMeta(all_meta);
 
 		// Update markdown
