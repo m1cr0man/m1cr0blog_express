@@ -1,5 +1,14 @@
-<% locals.post = locals.data || {next_posts: []} -%>
-<% locals.title = post.title + ' - M1cr0man\'s Blog' || '' -%>
+<%
+locals.post = locals.data || {next_posts: []};
+
+locals.meta = {
+	title: post.title,
+	title_tab_append: ' - M1cr0man\'s blog',
+	url: 'http://m1cr0man.com/' + post.url,
+	card: 'summary_large_image',
+	image: 'http://m1cr0man.com/posts/' + post.id + '/h384/' + post.image
+};
+-%>
 <% include ../partials/header %>
 
 <% if (locals.isLanding) { -%>

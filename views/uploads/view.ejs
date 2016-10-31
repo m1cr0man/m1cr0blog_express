@@ -1,5 +1,19 @@
-<% locals.file = locals.data || {} -%>
-<% locals.title = file.filename + ' - M1cr0man\'s Uploads' -%>
+<%
+locals.file = locals.data || {};
+
+locals.meta = {
+	title: file.filename,
+	title_tab_append: ' - M1cr0man\'s uploads',
+	url: 'http://u.m1cr0man.com/' + file.userID + file.id,
+	description: file.filename + ': Uploaded on ' + file.date.toLocaleString() + '. Size: ' + file.size,
+	card: 'summary'
+};
+
+if (file.type == 'image') {
+	meta.image = 'http://u.m1cr0man.com' + file.path;
+	meta.card = 'summary_large_image';
+}
+-%>
 <% include ../partials/header %>
 
 			<section class='blog-body upload'>

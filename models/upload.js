@@ -34,6 +34,15 @@ const writeMeta = (userID, id, data) => {
 	return fs.writeFileSync(j(dir, id), JSON.stringify(data), 'utf8');
 }
 
+// From StackOverflow
+const formatSize = (bytes) => {
+   if (bytes == 0) return '0 Bytes';
+   var k = 1000;
+   var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+   var i = Math.floor(Math.log(bytes) / Math.log(k));
+   return parseFloat((bytes / Math.pow(k, i)).toFixed(3)) + ' ' + sizes[i];
+}
+
 module.exports = {
 	get: (userID, id) => {
 		if (!fs.existsSync(j(META_STORAGE_DIR, userID, id))) return;
@@ -43,7 +52,10 @@ module.exports = {
 		if (!data.filename) return;
 
 		// Read file info
-		data.date = fs.statSync(j(STORAGE_DIR, userID, data.filename)).mtime;
+		var stats = fs.statSync(j(STORAGE_DIR, userID, data.filename));
+		data.date = stats.mtime;
+		data.size = formatSize(stats.size);
+
 		data.mimeType = mime.lookup(data.filename) || 'Unknown/';
 		data.type = data.mimeType.match(/^[^\/]+/g);
 

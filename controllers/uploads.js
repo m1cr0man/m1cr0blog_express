@@ -34,6 +34,7 @@ module.exports = {
 		if (!data) return next();
 
 		data.userID = userID;
+		data.id = id;
 		data.path = '/uploads/' + userID + '/' + data.filename;
 
 		return res.render(VIEW_DIR + 'view', {data: data});
