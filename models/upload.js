@@ -36,6 +36,8 @@ const writeMeta = (userID, id, data) => {
 
 module.exports = {
 	get: (userID, id) => {
+		if (!fs.existsSync(j(META_STORAGE_DIR, userID, id))) return;
+
 		var data = readMeta(userID, id);
 
 		if (!data.filename) return;
@@ -58,10 +60,22 @@ module.exports = {
 		if (!fs.existsSync(STORAGE_DIR + userID)) fs.mkdirSync(STORAGE_DIR + userID);
 		if (!fs.existsSync(META_STORAGE_DIR + userID)) fs.mkdirSync(META_STORAGE_DIR + userID);
 
-		// TODO Delete old files
+		// Delete old files
+		var all_ids = fs.readdirSync(META_STORAGE_DIR + userID);
+		var curdate = new Date();
+		for (id of all_ids) {
+			var upload_date = fs.statSync(j(META_STORAGE_DIR, userID, id)).mtime;
+
+			// Has the file expired?
+			if (curdate - upload_date >= RETAIN_LENGTH) {
+				var data = readMeta(userID, id);
+				if (fs.existsSync(j(STORAGE_DIR, userID, data.filename)))
+					fs.unlinkSync(j(STORAGE_DIR, userID, data.filename));
+				fs.unlinkSync(j(META_STORAGE_DIR, userID, id));
+			}
+		}
 
 		// Generate unique id
-		var all_ids = fs.readdirSync(STORAGE_DIR + userID);
 		var id = '';
 		do {
 			id = Math.random().toString(36).slice(-3);

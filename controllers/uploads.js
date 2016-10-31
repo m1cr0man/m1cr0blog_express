@@ -20,7 +20,7 @@ module.exports = {
 		return res.status(200).send(user.userID + file.id + ' ' + file.deleteID);
 	},
 
-	view: (req, res) => {
+	view: (req, res, next) => {
 		if (typeof req.params.args != 'string') return res.status(400).send('Invalid arguments');
 		if (req.params.args.length != 4) return res.status(400).send('Invalid arguments');
 
