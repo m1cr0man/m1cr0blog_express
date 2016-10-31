@@ -276,3 +276,9 @@ footer {
 	margin: 0 auto;
 	max-width: 720px;
 }
+
+/* Dirty solution to oversized twitter posts */
+#twitter {
+	max-height: 250px;
+	overflow-y: scroll;
+}
