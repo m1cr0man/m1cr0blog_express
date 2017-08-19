@@ -1,6 +1,6 @@
 const marked = require('marked');
 const crypto = require('crypto');
-const lwip = require('lwip');
+const lwip = require('pajk-lwip');
 const path = require('path');
 const lo = require('lodash');
 const fs = require('fs');
