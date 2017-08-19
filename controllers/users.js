@@ -54,6 +54,11 @@ module.exports = {
 		return res.redirect('.?action=updated');
 	},
 
+	regenToken: (req, res) => {
+		userModel.regenToken(req.params.username);
+		return res.redirect('..?action=updated');
+	},
+
 	delete: (req, res, next) => {
 		userModel.delete(req.params.username);
 		return res.redirect('..?action=deleted');

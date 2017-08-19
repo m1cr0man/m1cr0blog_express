@@ -21,6 +21,7 @@ adminRouter.get('/', admin.index);
 adminRouter.get('/users', users.index);
 adminRouter.all('/users/add', users.add);
 adminRouter.all('/users/:username', users.edit);
+adminRouter.get('/users/:username/regenToken', users.regenToken);
 adminRouter.get('/users/:username/delete', users.delete);
 
 // Blog management

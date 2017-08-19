@@ -81,6 +81,12 @@ module.exports = {
 		write(data.username, userdata);
 	},
 
+	regenToken: (username) => {
+		var userdata = read(username);
+		userdata.token = crypto.randomBytes(20).toString('hex');
+		write(username, userdata);
+	},
+
 	getAll: _ => {
 		var data = {};
 		for (username of fs.readdirSync(USER_STORAGE_DIR, 'utf8')) {

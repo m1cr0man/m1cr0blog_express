@@ -24,7 +24,7 @@ for (username in users) {
 						<tr>
 							<td><%= username %></td>
 							<td><%= user.token %></td>
-							<td><a href='<%= username %>' class='pure-button pure-button-secondary'>Edit</a> <a href='<%= username %>/delete' class='pure-button pure-button-error'>Delete</a></td>
+							<td><a href='<%= username %>' class='pure-button pure-button-secondary'>Edit</a> <a href='<%= username %>/regenToken' class='pure-button pure-button-warning'>Regen Token</a> <a href='<%= username %>/delete' class='pure-button pure-button-error'>Delete</a></td>
 						</tr>
 <% } -%>
 					</tbody>
