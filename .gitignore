@@ -16,6 +16,7 @@ lib-cov
 # Dependency directory
 # https://docs.npmjs.com/cli/shrinkwrap#caveats
 node_modules
+package-lock.json
 
 # Debug log from npm
 npm-debug.log
@@ -30,6 +31,9 @@ thirdparty
 private/*
 public/posts/*
 public/uploads/*
+public/backgrounds/*
+public/google*
+public/static/*
 
 # Sublime stuff
 *.sublime-*
