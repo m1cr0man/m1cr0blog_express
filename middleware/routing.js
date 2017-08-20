@@ -41,8 +41,8 @@ router.get('/uploads/:args', uploads.view);
 router.get('/uploads/:args/delete/:deleteID', uploads.delete);
 
 // Backgrounds
-router.get('/backgrounds', backgrounds.get);
-router.get('/backgrounds/force', backgrounds.forceChange);
+router.get('/backgrounds', backgrounds.checkUser, backgrounds.get);
+router.get('/backgrounds/force', backgrounds.checkUser, backgrounds.forceChange);
 // router.get('/backgrounds/upload', users.isLoggedIn, backgrounds.upload);
 
 // Main blog
